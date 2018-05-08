@@ -1,0 +1,170 @@
+### 常见数据类型长度
+
+| 类型 | 位长/b | 取值范围 |
+| ----- | ---| ------- |
+| boolean | 8 | -128~127 |
+| char | 16  | 0~65535  |
+| short  | 16  | -32768~32767  |
+| int  | 32  | -2^31~2^31-1  |
+| float  | 32  | 3.4e-38~3.4e38  |
+| double  | 64  | 1.7e-208~1.7e308  |
+
+>Java中的常量值是用文字串表示的，它区分为不同的类型，如整型常量123，实型常1.23，
+字符常量‘a’，布尔常量true、false以及字符串常量“This is a constant string”。   
+Java 的常量用final说明，约定常量名一般全部使用大写字母，如果是多个单词组合在一起的，单词之间用下划线连接，常量在程序执行时不可更改。    
+final还可以用于修饰类和方法。
+```java
+public class HelloWorld{
+  public void main(){
+    final int i = 1;
+    i = 10;  //i在之前已经被赋值过了，所以这里会出现编译错误
+  }
+  public void method(final int j){
+    j = 1;  //j在方法调用时已被赋值，所以这里会报错
+  }
+}
+```
+
+<br>
+>String类型其实并不是基本类型，但是它是如此广泛的被使用，常常被误以为是一种基本类型。<br>
+String类型是Immutable的，一旦创建就不能够被改变。
+
+** <font color='#97CBFF'>String, StringBuffer, StringBuild区别</font> **
++ String: 字符串常量，为不可变对象
+  - 每次对String类型进行改变时，都等同于生成新的String对象，然后将原来的指针指向新的String对象。
+  - 经常改变内容的字符串最好不要用 String ，因为每次生成对象都会对系统性能产生影响，特别当内存中无引用对象多了以后，JVM的GC就会开始工作，那速度是一定会相当慢的。
++ StringBuffer: 字符串变量(线程安全)
+  - 每次结果都会对 StringBuffer 对象本身进行操作，而不是生成新的对象，再改变对象引用。
++ StringBuild: 字符串变量(非线程安全)
+  - 此类提供一个与 StringBuffer 兼容的 API，但不保证同步。该类被设计用作 StringBuffer 的一个简易替换，用在字符串缓冲区被单个线程使用的时候（这种情况很普遍）。
+  - 如果可能，建议优先采用该类，因为在大多数实现中，它比 StringBuffer 要快。两者的方法基本相同。
+
+>在某些特别情况下，String 对象的字符串拼接其实是被 JVM 解释成了 StringBuffer 对象的拼接，所以这些时候 String 对象的速度并不会比 StringBuffer 对象慢，而特别是以下的字符串对象生成中，String 效率是远要比 StringBuffer 快的：<br>
+```java
+  String S1 = “This is only a” + “ simple” + “ test”;  //
+  StringBuffer Sb = new StringBuilder(“This is only a”).append(“ simple”).append(“ test”);
+```
+
+### 数据类型转换
+变量与存储器有着直接关系，定义一个变量就是要编译器分配所需要的内存空间，分配多少空间，这就是根据我们所定义的变量类型所决定的。变量名实际上是代表所分配空间的内存首地址。
+![](assets/001/20180507-ac7fee1d.png)
+
+### 数组
+
+Java数组可以第二维不等长。
+```Java
+int a[][]=new int[10,10] //错
+
+int a[10][10]=new int[][] //错
+
+int a[][]=new int[10][10] //对
+
+int []a[]=new int[10][10] //对
+
+int [][]a=new int[10][10] //对
+```
+
+<font color='#FF9797'>Java中二维数组分配空间时第二维可以为空，但是第一维必须分配内存。</font>
+
+### 运算符
+
+##### <font color='#97CBFF'>逻辑运算符</font>  
+
+| 运算符 | 结果 | 说明 |
+| :--- | :--- | :--- |
+| ~  | 按位非(NOT, 一元运算)  | 对每一位取反(二进制) |
+| &  | 按位与(AND)  | |
+| &#124; | 按位或(OR)  | |
+| ^  | 按位异或(XOR)  | 不同返回真，相同返回假 |
+| >>  | 右移  | 正数左边补0, 负数左边补1 |
+| >>>  | 无符号右移  | 左边空出的位以0填充 |
+| <<  | 左移  | 最右边一位补0 |
+| &=  | 按位与赋值  | |
+| &#124;=  | 按位或赋值  | |
+| ^=  | 按位异或赋值  | |
+| >>=  | 右移赋值  | |
+| >>>=  | 无符号右移赋值  | 左边空出的位以0填充 |
+| <<=  | 左移赋值  | &nbsp; |
+
+`任何数和自己进行异或 都等于 0` <br>
+`任何数和0 进行异或 都等于自己`
+
+###### <font color='#7AFEC6'>&/&&、|/||区别</font>    
+&: 长路与&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|: 长路或    
+&&: 短路与&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;||: 短路或    
+长路和短路，表达式的结果一致；区别是长路操作符两边都会运算，短路与只要第一个为假其他就不运算；短路或只要第一个为真其他就不运算
+```java
+public class HelloWorld {
+    public static void main(String[] args) {
+        //长路与  无论第一个表达式的值是true或者false,第二个的值，都会被运算
+        int i = 2;
+        System.out.println( i == 1 && i++ == 2  ); //无论如何i++都会被执行，所以i的值变成了3
+        System.out.println(i);
+
+        //短路与 只要第一个表达式的值是false的，第二个表达式的值，就不需要进行运算了
+        int j = 2;
+        System.out.println( j == 1 && j++ == 2  );  //因为j==1返回false,所以右边的j++就没有执行了，所以j的值，还是2
+        System.out.println(j);  
+
+        //长路或  无论第一个表达式的值是true或者false,第二个的值，都会被运算
+        int a = 2;
+        System.out.println( a == 1 | a++ == 2  ); //无论如何a++都会被执行，所以a的值变成了3
+        System.out.println(a);
+
+        //短路或 只要第一个表达式的值是true的，第二个表达式的值，就不需要进行运算了
+        int b = 2;
+        System.out.println( b == 2 || b++ == 2  );  //因为b==2返回true,所以右边的b++就没有执行了，所以b的值，还是2
+        System.out.println(b);      
+    }
+}
+```
+
+##### <font color='#97CBFF'>算数操作符</font>
+如果有任何运算单元的长度超过int,那么运算结果就按照最长的长度计算。  
+```java
+public class HelloWorld {
+  public static void main(String[] args) {
+      int a = 5;
+      long b = 6;
+      int c = (int) (a+b); //a+b的运算结果是long型，所以要进行强制转换
+      long d = a+b;
+
+  }
+}
+```
+
+如果任何运算单元的长度都不超过int,那么运算结果就按照int来计算。   
+```java
+public class HelloWorld {
+	public static void main(String[] args) {
+		byte a = 1;
+		byte b= 2;
+		byte c = (byte) (a+b); //虽然a b都是byte类型，但是运算结果是int类型，需要进行强制转换
+		int d = a+b;
+	}
+}
+```
+
+##### <font color='#97CBFF'>自增、自减操作符</font>
+以++为例     
+`int i = 5;`    
+`i++; 先取值，再运算`    
+`++i; 先运算，再取值`    
+```Java
+public class HelloWorld {
+    public static void main(String[] args) {
+        int i = 5;
+        System.out.println(i++); //输出5, 先取i的值为5，输出5，然后再i + 1
+        System.out.println(i);   //输出6, i在之前 +1
+
+        int j = 5;
+        System.out.println(++j); //输出6, j先 +1, 然后输出
+        System.out.println(j);   //输出6
+
+        int a = 1;
+        int b = ++a + a++ + ++a + ++a + a++;
+        System.out.println(a);  //输出6, a自增了5次, a = a + 5
+        System.out.println(b);  //输出18, ++a, a先 +1(a此时为2), 然后取b = a(a此时为2); + a++, 先取b = b + a(a此时为2), 然后a + 1(a此时为3)
+    }
+}
+```

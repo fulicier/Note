@@ -2,7 +2,7 @@
 #### [首页](?file=home-首页)
 
 ##### Java基础
-- [Java基本数据类型](?file=001-Java基础/01-Java基本数据类型 "Java基本数据类型")
+- [Java基本数据类型和操作符](?file=001-Java基础/01-Java基本数据类型和操作符 "Java基本数据类型和操作符")
 - [amWiki功能导图](?file=001-Java基础/02-amWiki功能导图 "amWiki功能导图")
 - [如何开始一个新amWiki轻文库](?file=001-Java基础/03-如何开始一个新amWiki轻文库 "如何开始一个新amWiki轻文库")
 - [如何编辑amWiki轻文库](?file=001-Java基础/04-如何编辑amWiki轻文库 "如何编辑amWiki轻文库")
